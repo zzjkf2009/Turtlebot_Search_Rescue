@@ -1,6 +1,6 @@
 
 #  Turtlebot_Search_Rescue
-[![Build Status](https://travis-ci.org/zzjkf2009/Turtlebot_Search_Rescue.svg?branch=master)]https://travis-ci.org/zzjkf2009/Turtlebot_Search_Rescue)
+[![Build Status](https://travis-ci.org/zzjkf2009/Turtlebot_Search_Rescue.svg?branch=master)](https://travis-ci.org/zzjkf2009/Turtlebot_Search_Rescue)
 
 [![Coverage Status](https://coveralls.io/repos/github/zzjkf2009/Turtlebot_Search_Rescue/badge.svg?branch=master)](https://coveralls.io/github/zzjkf2009/Turtlebot_Search_Rescue?branch=master)
 
