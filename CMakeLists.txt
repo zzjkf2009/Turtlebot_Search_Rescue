@@ -196,9 +196,49 @@ add_executable(visionTurtlebot src/my_image_sub.cpp src/TargetDectandControl.cpp
 
 ## Add gtest based cpp test target and link libraries
 # catkin_add_gtest(${PROJECT_NAME}-test test/test_trash.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
+#  if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+if(CATKIN_ENABLE_TESTING)
+find_package(rostest REQUIRED)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 --coverage")
+# gtest PIDcontroller Class
+ add_rostest_gtest(
+    testPID
+   # test/maintest.cpp
+    test/PIDtest.launch
+    test/PIDtest.cpp
+    src/PIDcontroller.cpp
+  )
+  target_link_libraries(
+    testPID
+    ${catkin_LIBRARIES}
+  )
+  add_dependencies(
+    testPID
+    ${catkin_EXPORTED_TARGETS}
+)
+
+ add_rostest_gtest(
+    targetDectest
+    test/TargetDectest.launch
+   # test/maintest.cpp
+    test/TargetDectest.cpp
+    src/PIDcontroller.cpp
+    src/TargetDectandControl.cpp
+  )
+  target_link_libraries(
+    targetDectest
+    ${catkin_LIBRARIES}
+  )
+  add_dependencies(
+    targetDectest
+    visionTurtlebot
+    ${catkin_EXPORTED_TARGETS}
+)
+
+
+endif()
