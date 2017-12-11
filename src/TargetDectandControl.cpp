@@ -11,12 +11,11 @@
 #include"../include/ROS_opencv_improcess/TargetDectandControl.hpp"
 #include"../include/ROS_opencv_improcess/PIDcontroller.hpp"
 
-ObjectOrientatedControl::ObjectOrientatedControl() {
+ObjectOrientatedControl::ObjectOrientatedControl(ros::NodeHandle &n) {
+nh = n;
 imageSubscriber();
-scanSubscriber();
 velocityPublisher();
 }
-
 
 
 void ObjectOrientatedControl::imageSubscriber() {
@@ -24,9 +23,6 @@ void ObjectOrientatedControl::imageSubscriber() {
   sub = it.subscribe("camera/rgb/image_raw", 1, &ObjectOrientatedControl::imageCallback,this);
 }
 
-void ObjectOrientatedControl::scanSubscriber() {
-  ScanSub = nh.subscribe("/robot1/Robot1/scan",1000,&ObjectOrientatedControl::DisReceive,this);
-}
 
 void ObjectOrientatedControl::imageCallback(const sensor_msgs::ImageConstPtr& msg)
 {
@@ -37,34 +33,11 @@ void ObjectOrientatedControl::imageCallback(const sensor_msgs::ImageConstPtr& ms
     getPosition(imgThresholded);
     cv::Mat DrawedImg = drawPosition(cv_bridge::toCvShare(msg, "bgr8")->image);
     cv::imshow("view", DrawedImg);
-    //cv::waitKey(30);
   }
   catch (cv_bridge::Exception& e)
   {
     ROS_ERROR("Could not convert from '%s' to 'bgr8'.", msg->encoding.c_str());
   }
-}
-
-void ObjectOrientatedControl::DisReceive(const sensor_msgs::LaserScan::ConstPtr& scan) {
-      smallest = 100;
-      int size=scan->ranges.size();
-      for(int i=0;i<size;++i) {
-      if(scan->ranges[i]>0.1 && smallest>scan->ranges[i])
-      smallest=scan->ranges[i];
-      else
-         continue;
-      }
-}
-
-bool ObjectOrientatedControl::CheckCollision(double dis) {
-  if(dis>0.4) {
-   collision = false;
-   ROS_INFO_STREAM("Dist: " << smallest << ", Go Forward");
- }
-  if(dis<0.4) {
-   collision = true;
-   ROS_INFO_STREAM("Dist: " << smallest << ", Stop");
- }
 }
 
 cv::Mat ObjectOrientatedControl::getThreholdImg( cv::Mat imgOriginal) {
@@ -99,7 +72,7 @@ double dArea = oMoments.m00;
 PoseX = -1;
 PoseY = -1;
 if (dArea > 10000) {
-  // calculate the positionof the object
+  // calculate the position of the object
    PoseX = dM10/dArea;
    PoseY = dM01/dArea;
 }
@@ -118,7 +91,7 @@ cv::Mat ObjectOrientatedControl::drawPosition(cv::Mat originalImg) {
 
 
 void ObjectOrientatedControl::velocityPublisher() {
-pub = nh.advertise < geometry_msgs::Twist> ("/robot1/cmd_vel_mux/input/teleop", 1000);
+pub = nh.advertise < geometry_msgs::Twist> ("/cmd_vel_mux/input/teleop", 1000);
 PIDcontroller pid;
 geometry_msgs::Twist input;
 //CheckCollision(smallest);
@@ -126,40 +99,20 @@ if (find) {
 double error = weight/2 - PoseX;
 double out = pid.calculatePID(error);
 if (abs(error) > weight/4) {
-
-/*if(collision) {
-  input.linear.x = 0;
-  input.linear.y = 0;
-  input.linear.z = 0;
-  input.angular.x = 0;
-  input.angular.y = 0;
-  input.angular.z = out;
-}
-  else { */
       input.linear.x = 0.0;
       input.linear.y = 0;
       input.linear.z = 0;
       input.angular.x = 0;
       input.angular.y = 0;
       input.angular.z = out;
-  //  }
 } else {
-/*  if(collision) {
-    input.linear.x = 0;
-    input.linear.y = 0;
-    input.linear.z = 0;
-    input.angular.x = 0;
-    input.angular.y = 0;
-    input.angular.z = 0;
-  }
-    else { */
+
       input.linear.x = 1.0;
       input.linear.y = 0;
       input.linear.z = 0;
       input.angular.x = 0;
       input.angular.y = 0;
       input.angular.z = out;
-  //  }
 }
 } else {
   input.linear.x = 0;
