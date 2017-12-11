@@ -10,7 +10,10 @@ private:
  double pre_error = 0;
  double integral = 0;
 public:
-double calculatePID(double error);
+ double Pterm(double error);
+ double Iterm(double error);
+ double Dterm(double error);
+ double calculatePID(double error);
 };
 
 #endif // _PIDCONTROLLER_H_
