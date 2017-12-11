@@ -7,11 +7,12 @@
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "Vision Control Robot");
+  ros::NodeHandle n;
   cv::namedWindow("view");
   cv::startWindowThread();
   cv::namedWindow("Threshold");
   cv::startWindowThread();
-  ObjectOrientatedControl Imp;
+  ObjectOrientatedControl Imp(n);
   while(ros::ok) {
   Imp.velocityPublisher();
   ros::spinOnce();
