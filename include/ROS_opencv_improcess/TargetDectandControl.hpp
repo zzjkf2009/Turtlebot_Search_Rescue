@@ -11,29 +11,26 @@ ros::NodeHandle nh;
 image_transport::Subscriber sub;
 ros::Publisher pub;
 ros::Subscriber ScanSub;
-int iLowH = 110;
-int iHighH = 160;
+int iLowH = 0;
+int iHighH = 10;
 
-int iLowS = 60;
+int iLowS = 40;
 int iHighS = 255;
 
 int iLowV = 0;
 int iHighV = 100;
-int PoseX ;
-int PoseY ;
 int weight;
-bool find ;
 bool collision ;
-double smallest;
+float smallest;
 public:
-  ObjectOrientatedControl();
+  int PoseX ;
+  int PoseY ;
+  bool find ;
+  ObjectOrientatedControl(ros::NodeHandle &n);
   void imageSubscriber();
   void velocityPublisher();
-  void scanSubscriber();
   void imageCallback(const sensor_msgs::ImageConstPtr& msg);
-  void DisReceive(const sensor_msgs::LaserScan::ConstPtr& scan);
   cv::Mat getThreholdImg( cv::Mat imgOriginal);
   void getPosition(cv::Mat imgThresholded);
   cv::Mat drawPosition(cv::Mat originalImg);
-  bool CheckCollision(double dis);
 };
