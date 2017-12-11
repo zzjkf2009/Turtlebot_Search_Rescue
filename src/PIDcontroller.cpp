@@ -5,17 +5,27 @@
 
 double PIDcontroller::calculatePID(double error) {
 // proporatoinal term
-double Pout = Kp * error;
-// integral term
- integral += error * dt;
-double Iout = Ki * integral;
+double Pout = Pterm(error);
+// integrate term
+double Iout=Iterm(error);
 // derivative term
-double derivative = (error - pre_error) / dt;
-double Dout = Kd * derivative;
+double Dout = Dterm(error);
 // calculate the total term
 double TotalOut = Pout + Iout + Dout;
 
-pre_error = error;
-
 return TotalOut;
+}
+
+double PIDcontroller::Pterm(double error) {
+  return Kp * error;
+}
+
+double PIDcontroller::Iterm(double error) {
+   integral += error * dt;
+   return Ki * integral;
+}
+double PIDcontroller::Dterm(double error) {
+  double derivative = (error - pre_error) / dt;
+  pre_error = error;
+  return Kd * derivative;
 }
