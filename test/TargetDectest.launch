@@ -1,0 +1,3 @@
+<launch>
+  <test pkg="ROS_opencv_improcess" test-name="targetDectest" type="targetDectest"/>
+</launch>
