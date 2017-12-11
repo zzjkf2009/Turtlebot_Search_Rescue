@@ -1,5 +1,6 @@
 <launch>
   <param name="/use_sim_time" value="true" />
+ <arg name="robot1_init_pose" default="-x 1.5 -y -2 -z 0" />
  <arg name="world_file"  value = "$(find ROS_opencv_improcess)/worlds/newTest.world"/>
  <arg name="gui" default="true"/>
 
@@ -11,8 +12,9 @@
   </include>
 
 <!-- include our robots -->
-  <include file="$(find ROS_opencv_improcess)/launch/robot.launch"/>
-
+  <include file="$(find ROS_opencv_improcess)/launch/robot.launch">
+  <arg name="init_pose_1" value="$(arg robot1_init_pose)" />
+  </include>
 
 <node pkg="turtlebot_teleop" type="turtlebot_teleop_key" name="turtlebot_teleop_keyboard" launch-prefix="xterm -e" output="screen">
     <param name="scale_linear" value="0.5" type="double"/>

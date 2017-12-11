@@ -9,11 +9,12 @@
     <arg name="urdf_file" default="$(find xacro)/xacro.py '$(find turtlebot_description)/robots/$(arg base)_$(arg stacks)_$(arg 3d_sensor).urdf.xacro'" />
   <param name="robot_description" command="$(arg urdf_file)" />
 
+ <arg name="init_pose_1"/>
   <!-- BEGIN ROBOT 1-->
   <group ns="robot1">
     <param name="tf_prefix" value="robot1_tf" />
     <include file="$(find ROS_opencv_improcess)/launch/oneRobot.launch" >
-      <arg name="init_pose" value="-x 1.5 -y -2 -z 0" />
+      <arg name="init_pose" value="$(arg init_pose_1)" />
       <arg name="robot_name"  value="robot1" />
     </include>
   </group>
