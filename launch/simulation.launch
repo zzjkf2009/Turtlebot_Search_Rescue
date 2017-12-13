@@ -1,5 +1,6 @@
 <launch>
   <param name="/use_sim_time" value="true" />
+ <arg name="enable_record" default="false"/>
  <arg name="robot1_init_pose" default="-x 1.5 -y -2 -z 0" />
  <arg name="world_file"  value = "$(find ROS_opencv_improcess)/worlds/newTest.world"/>
  <arg name="gui" default="true"/>
@@ -26,5 +27,8 @@
 <remap from="camera/rgb/image_raw" to ="/robot1/camera/rgb/image_raw" />
 <remap from="/scan" to ="/robot1/scan" />
 <remap from="/cmd_vel_mux/input/teleop" to="robot1/cmd_vel_mux/input/teleop" />
+</node>
+
+<node pkg="rosbag" name="record" type="record" args="-a -O session.bag -x /camera/(.*)" if="$(arg enable_record)">
 </node>
 </launch>
