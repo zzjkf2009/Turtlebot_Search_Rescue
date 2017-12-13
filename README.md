@@ -52,17 +52,19 @@ This should bring you the gazebo simulation environment with two turtlebot insid
 The default desired color is RED and the robot1 will start to turn around in place until it finds fired hydrant. When it sees the target, the threshold image will turns to:
 
 ![alt text](https://github.com/zzjkf2009/Turtlebot_Search_Rescue/blob/master/result/fire%20hydrant.png "Fire hydrant")
+
 And the position of target in image will be calculated. The PID controller will help the robot to orientate itself to the its desired target by put the object at the middle of the image and navigate to the it.
 The desired color can be changed anytime during the sinulation. For example, after the robot1 reached the fire hydrant, we adjust the HSV value through the controlbar:
 
 ![alt text](https://github.com/zzjkf2009/Turtlebot_Search_Rescue/blob/master/result/HSV%20toolbar.png "controlbar")
+
 The template HSV for red, blue and green were given in below section. After we change the LowH to 100 and HighH to 150, the robot1 will find the blue object, which is the postbox by repeating the same process until it finds it as:
 
 ![alt text](https://github.com/zzjkf2009/Turtlebot_Search_Rescue/blob/master/result/postboxThreshold.png "postbox")
 
 A couple of arguments can be set through the launch file like, changing the gazebo environmetn, robot name, initial position of the turtlebot by:
 ```
- roslaunch ROS_opencv_improcess simulation.launch robot1_init_pose:="-x -5 -y -5 -z 0" world_file:="$(find ROS_opencv_improcess)/worlds/newTest.world"
+roslaunch ROS_opencv_improcess simulation.launch robot1_init_pose:="-x -5 -y -5 -z 0" world_file:="$(find ROS_opencv_improcess)/worlds/newTest.world"
 ```
 ## Test - rostest
 Test implemented can be run as follow:
@@ -71,7 +73,20 @@ cd ~/catkin_ws
 source ./devel/setup.bash
 catkin_make run_tests
 ``` 
+## Record - rosbag
+*simulation.launch* file supports recording topics in Gazebo simulation excluding the images. This can be done by specifying "enable_record" argument. By default, recording is disabled.
 
+To enable rosbag recording:
+```
+cd ~/catkin_ws
+source ./devel/setup.bash
+roslaunch ROS_opencv_improcess simulation.launch enable_record:=true
+```
+To inspect rosbag recording result:
+```
+cd ~/.ros/
+rosbag info session.bag
+```
 ## Color detection and Object tracking
 
 Object detection and segmenration is the most important and challenging fundamental task of computer vision. It is a critical part
@@ -92,7 +107,6 @@ In this project, according to a mannual classification process, I defined the HU
 | Red   |  0-10    | 40-255     | 0-255 |
 
 
-
 ### Object Location Detection
 The position of the object is calculated using moments function by OpenCV. 1st order spatial moments abound x-axis and y-axis and the 0th order central moments of the binary image is calculated. 
 **Note** If there are two or more objects are detected, this method is not working anymore. Also if there is no desired color detected, the turtlebot will stuck at the orinial place.
@@ -103,6 +117,14 @@ Here, I set the error as the difference bwtween the position, mainly, PoseX of t
 
 
 ### Things to do
-1. constructor: pass nodehandle
 2. Header file dependencies
 3. roscord- rosbag
+4. cppint cppcheck 
+5. Update UML diagram
+6. TravisCI Unit test
+## 
+New UML commit message:
+set variable PoseX and PoseY and find as public 
+delete variable collision and smallest 
+delete functions related to the distance scan 
+Add one action of reading HSV value form controlbar to the activity diagram
