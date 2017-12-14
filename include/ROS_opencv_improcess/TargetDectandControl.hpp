@@ -49,6 +49,10 @@ class ObjectOrientatedControl {
   image_transport::Subscriber sub;
   ros::Publisher pub;
   ros::Subscriber ScanSub;
+  /**
+  * The number defined below are the HSV
+  * range for RED color
+  */
   int iLowH = 0;
   int iHighH = 10;
   int iLowS = 40;
@@ -111,7 +115,7 @@ class ObjectOrientatedControl {
    *   @param  cv::Mat
    *   @return none
    */
-  void getPosition(cv::Mat imgThresholded);
+  void getPosition(const cv::Mat& imgThresholded);
   /**
    *   @brief  draw the detected location of the target in original
    *   image

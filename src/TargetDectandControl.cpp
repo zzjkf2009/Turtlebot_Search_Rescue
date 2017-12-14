@@ -97,7 +97,7 @@ cv::Mat ObjectOrientatedControl::getThreholdImg(cv::Mat imgOriginal) {
   return imgThresholded;
 }
 
-void ObjectOrientatedControl::getPosition(cv::Mat imgThresholded) {
+void ObjectOrientatedControl::getPosition(const cv::Mat& imgThresholded) {
   cv::Moments oMoments = cv::moments(imgThresholded);
   double dM01 = oMoments.m01;
   double dM10 = oMoments.m10;
