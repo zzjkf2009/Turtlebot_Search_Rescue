@@ -1,0 +1,10 @@
+viki@ubuntu:~/catKin_ws/src/Turtlebot_Search_Rescue$ cpplint $( find . -name \*.hpp -or -name \*.cpp | grep -vE -e "^./build/" -e "^./vendor/" -e "^./docs/" -e "^./results" )Done processing ./include/ROS_opencv_improcess/PIDcontroller.hpp
+./include/ROS_opencv_improcess/TargetDectandControl.hpp:74:  Is this a non-const reference? If so, make const or use a pointer: ros::NodeHandle &n  [runtime/references] [2]
+Done processing ./include/ROS_opencv_improcess/TargetDectandControl.hpp
+Done processing ./src/TargetDectandControl.cpp
+Done processing ./src/PIDcontroller.cpp
+Done processing ./src/my_image_sub.cpp
+Done processing ./test/PIDtest.cpp
+Done processing ./test/TargetDectest.cpp
+Total errors found: 1
+
