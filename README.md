@@ -115,16 +115,8 @@ The position of the object is calculated using moments function by OpenCV. 1st o
 If you are not familiar with PID controller, please see: https://www.csimn.com/CSI_pages/PIDforDummies.html
 Here, I set the error as the difference bwtween the position, mainly, PoseX of the detected object and the center of the image view, which is error = weight/2 -poseX. Unit in pixel. outout=Pterm +Iterm +Dterm, where output is angular velocity in radius. The PID gain are tuned mannually as: Kp = 0.002, Ki = 0.001, kd = 0.001 
 
+## Issue Note
+As metioned above, there are some issue should be noticed, **One** is that if the turtlebot didn't find the desired color for some reason (eg. color didn't exist, target is blocked by other objects), the robot will have to turn in place until it find the color. One sulution could be use keyboard controller to help him to move to a new place and try to look for 
+the target at the new place. Or use some other strategies to let it move. **Second** The drawback of deleting the collision check function is that the turtlebot will hit the objects, which may hurt the robots. **Thired** TravisCI didn't pas the Unit test for some reason, it does pass on local compiler. 
 
-### Things to do
-2. Header file dependencies
-3. roscord- rosbag
-4. cppint cppcheck 
-5. Update UML diagram
-6. TravisCI Unit test
-## 
-New UML commit message:
-set variable PoseX and PoseY and find as public 
-delete variable collision and smallest 
-delete functions related to the distance scan 
-Add one action of reading HSV value form controlbar to the activity diagram
+
