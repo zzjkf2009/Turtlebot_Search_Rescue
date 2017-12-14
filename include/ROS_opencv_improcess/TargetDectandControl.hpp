@@ -34,8 +34,8 @@
  *  @date   12/2017
  */
 
-#ifndef _TARGETDECTANDCONTROL_H_
-#define _TARGETDECTANDCONTROL_H_
+#ifndef INCLUDE_ROS_OPENCV_IMPROCESS_TARGETDECTANDCONTROL_HPP_
+#define INCLUDE_ROS_OPENCV_IMPROCESS_TARGETDECTANDCONTROL_HPP_
 
 #include<ros/ros.h>
 #include <image_transport/image_transport.h>
@@ -51,15 +51,14 @@ class ObjectOrientatedControl {
   ros::Subscriber ScanSub;
   int iLowH = 0;
   int iHighH = 10;
-
   int iLowS = 40;
   int iHighS = 255;
-
   int iLowV = 0;
   int iHighV = 100;
   int weight;
   bool collision;
   float smallest;
+
  public:
   int PoseX;
   int PoseY;
@@ -72,7 +71,7 @@ class ObjectOrientatedControl {
    *   @param  ros::NodeHandle
    *   @return double
    */
-  ObjectOrientatedControl(ros::NodeHandle &n);
+  explicit ObjectOrientatedControl(ros::NodeHandle &n);
   /**
    *   @brief  start the image subscriber
    *
@@ -122,4 +121,4 @@ class ObjectOrientatedControl {
    */
   cv::Mat drawPosition(cv::Mat originalImg);
 };
-#endif // _TARGETDECTANDCONTROL_H_
+#endif  // INCLUDE_ROS_OPENCV_IMPROCESS_TARGETDECTANDCONTROL_HPP_

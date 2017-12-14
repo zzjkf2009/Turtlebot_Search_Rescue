@@ -31,8 +31,8 @@
  *  @author Zejiang Zeng
  *  @date   12/2017
  */
-#ifndef _PIDCONTROLLER_H_
-#define _PIDCONTROLLER_H_
+#ifndef INCLUDE_ROS_OPENCV_IMPROCESS_PIDCONTROLLER_HPP_
+#define INCLUDE_ROS_OPENCV_IMPROCESS_PIDCONTROLLER_HPP_
 
 class PIDcontroller {
  private:
@@ -42,6 +42,7 @@ class PIDcontroller {
   double Kd = 0.00;
   double pre_error = 0;
   double integral = 0;
+
  public:
   /**
    *   @brief  calculate the proporatoinal term
@@ -73,4 +74,4 @@ class PIDcontroller {
   double calculatePID(double error);
 };
 
-#endif // _PIDCONTROLLER_H_
+#endif  // INCLUDE_ROS_OPENCV_IMPROCESS_PIDCONTROLLER_HPP_

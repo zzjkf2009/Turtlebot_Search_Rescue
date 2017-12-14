@@ -39,8 +39,8 @@
 #include <sensor_msgs/LaserScan.h>
 #include"opencv2/highgui/highgui.hpp"
 #include"opencv2/imgproc/imgproc.hpp"
-#include"../include/ROS_opencv_improcess/TargetDectandControl.hpp"
-#include"../include/ROS_opencv_improcess/PIDcontroller.hpp"
+#include"TargetDectandControl.hpp"
+#include"PIDcontroller.hpp"
 
 ObjectOrientatedControl::ObjectOrientatedControl(ros::NodeHandle &n) {
   nh = n;
@@ -138,7 +138,6 @@ void ObjectOrientatedControl::velocityPublisher() {
       input.angular.y = 0;
       input.angular.z = out;
     } else {
-
       input.linear.x = 1.0;
       input.linear.y = 0;
       input.linear.z = 0;
