@@ -48,19 +48,19 @@ roslaunch ROS_opencv_improcess simulation.launch
 ```
 
 This should bring you the gazebo simulation environment with two turtlebot inside. robot1 was controlled by the vision-based controller and the robot2 was controlled by the keyboard. The gazebo environment is shown below:
-![alt text](https://github.com/zzjkf2009/Turtlebot_Search_Rescue/blob/master/result/Gazebo.png "Gazebo world")
+![alt text](https://github.com/zzjkf2009/Turtlebot_Search_Rescue/blob/kinetic/result/Gazebo7.9_world.png "Gazebo world")
 The default desired color is RED and the robot1 will start to turn around in place until it finds fired hydrant. When it sees the target, the threshold image will turns to:
 
-![alt text](https://github.com/zzjkf2009/Turtlebot_Search_Rescue/blob/master/result/fire%20hydrant.png "Fire hydrant")
+![alt text](https://github.com/zzjkf2009/Turtlebot_Search_Rescue/blob/kinetic/result/Gazebo7.9_Postbox.png "Fire hydrant")
 
 And the position of target in image will be calculated. The PID controller will help the robot to orientate itself to the its desired target by put the object at the middle of the image and navigate to the it.
 The desired color can be changed anytime during the sinulation. For example, after the robot1 reached the fire hydrant, we adjust the HSV value through the controlbar:
 
-![alt text](https://github.com/zzjkf2009/Turtlebot_Search_Rescue/blob/master/result/HSV%20toolbar.png "controlbar")
+![alt text](https://github.com/zzjkf2009/Turtlebot_Search_Rescue/blob/kinetic/result/controlbar.png "controlbar")
 
 The template HSV for red, blue and green were given in below section. After we change the LowH to 100 and HighH to 150, the robot1 will find the blue object, which is the postbox by repeating the same process until it finds it as:
 
-![alt text](https://github.com/zzjkf2009/Turtlebot_Search_Rescue/blob/master/result/postboxThreshold.png "postbox")
+![alt text](https://github.com/zzjkf2009/Turtlebot_Search_Rescue/blob/kinetic/result/gazebo7.9_postbox_threshold.png "postbox")
 
 A couple of arguments can be set through the launch file like, changing the gazebo environmetn, robot name, initial position of the turtlebot by:
 ```
