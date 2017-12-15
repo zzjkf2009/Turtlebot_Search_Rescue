@@ -35,7 +35,7 @@ Link:[SIP](https://docs.google.com/spreadsheets/d/1JYr0vUaX_IJUcu1v-DaRxEUFKbrd-
 ```
 mkdir catkin_ws/src
 cd ./catkin_ws/src
-git clone --recursive https://github.com/zzjkf2009/Turtlebot_Search_Rescue
+git clone -b kinetic https://github.com/zzjkf2009/Turtlebot_Search_Rescue
 cd ..
 catkin_make
 ```
