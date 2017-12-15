@@ -123,3 +123,6 @@ As metioned above, there are some issue should be noticed:
 the target at the new place. Or use some other strategies to let it move.
 **Second** The drawback of deleting the collision check function is that the turtlebot will hit the objects, which may hurt the robots. 
 **Thired** TravisCI didn't pas the Unit test for some reason, it does pass on local compiler. 
+
+## Video Presentation:
+Youtube Link:https://youtu.be/zzCWbYennlE 
