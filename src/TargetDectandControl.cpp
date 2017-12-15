@@ -42,10 +42,10 @@
 #include"TargetDectandControl.hpp"
 #include"PIDcontroller.hpp"
 
-ObjectOrientatedControl::ObjectOrientatedControl(ros::NodeHandle &n) {
-  nh = n;
+ObjectOrientatedControl::ObjectOrientatedControl() {
   imageSubscriber();
-  velocityPublisher();
+  pub = nh.advertise < geometry_msgs::Twist
+      > ("/cmd_vel_mux/input/teleop", 1000);
 }
 
 void ObjectOrientatedControl::imageSubscriber() {
@@ -57,12 +57,15 @@ void ObjectOrientatedControl::imageSubscriber() {
 void ObjectOrientatedControl::imageCallback(
     const sensor_msgs::ImageConstPtr& msg) {
   try {
+    ROS_INFO_STREAM("get image");
     cv::Mat imgThresholded = getThreholdImg(
         cv_bridge::toCvShare(msg, "bgr8")->image);
     cv::imshow("Threshold", imgThresholded);
+    cv::waitKey(1);
     getPosition(imgThresholded);
     cv::Mat DrawedImg = drawPosition(cv_bridge::toCvShare(msg, "bgr8")->image);
     cv::imshow("view", DrawedImg);
+    cv::waitKey(1);
   } catch (cv_bridge::Exception& e) {
     ROS_ERROR("Could not convert from '%s' to 'bgr8'.", msg->encoding.c_str());
   }
@@ -123,8 +126,6 @@ cv::Mat ObjectOrientatedControl::drawPosition(cv::Mat originalImg) {
 }
 
 void ObjectOrientatedControl::velocityPublisher() {
-  pub = nh.advertise < geometry_msgs::Twist
-      > ("/cmd_vel_mux/input/teleop", 1000);
   PIDcontroller pid;
   geometry_msgs::Twist input;
   if (find) {
@@ -151,7 +152,7 @@ void ObjectOrientatedControl::velocityPublisher() {
     input.linear.z = 0;
     input.angular.x = 0;
     input.angular.y = 0;
-    input.angular.z = 0.5;
+    input.angular.z = 0.8;
   }
   pub.publish(input);
 }

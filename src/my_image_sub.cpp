@@ -29,20 +29,20 @@
  *  @date   12/2017
  */
 #include <ros/ros.h>
-#include"../include/ROS_opencv_improcess/TargetDectandControl.hpp"
+#include"TargetDectandControl.hpp"
 
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "Vision Control Robot");
-  ros::NodeHandle n;
+  ros::init(argc, argv, "Vision_Control_Robot");
   cv::namedWindow("view");
-  cv::startWindowThread();
   cv::namedWindow("Threshold");
-  cv::startWindowThread();
-  ObjectOrientatedControl Imp(n);
+  ObjectOrientatedControl Imp;
+  ros::Rate loop_rate(15);
   while (ros::ok) {
     Imp.velocityPublisher();
     ros::spinOnce();
+    loop_rate.sleep();
   }
   cv::destroyWindow("view");
   cv::destroyWindow("Threshold");
+  ros::shutdown();
 }

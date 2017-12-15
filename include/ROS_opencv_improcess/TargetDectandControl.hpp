@@ -75,7 +75,7 @@ class ObjectOrientatedControl {
    *   @param  ros::NodeHandle
    *   @return double
    */
-  explicit ObjectOrientatedControl(ros::NodeHandle &n);
+  explicit ObjectOrientatedControl();
   /**
    *   @brief  start the image subscriber
    *
