@@ -30,6 +30,8 @@
  */
 #include <ros/ros.h>
 #include"TargetDectandControl.hpp"
+#include"opencv2/imgproc/imgproc.hpp"
+#include"TargetDectandControl.hpp"
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "Vision_Control_Robot");

@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   image_transport
   roscpp
   sensor_msgs
+  OpenCV
 )
 
 ## System dependencies are found with CMake's conventions
@@ -121,7 +122,7 @@ include_directories(
   include/ROS_opencv_improcess
   ${catkin_INCLUDE_DIRS}
 )
-
+include_directories(${catkin_INCLUDE_DIRS}	${OpenCV_INCLUDE_DIRS})
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/trash.cpp

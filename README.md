@@ -5,7 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/zzjkf2009/Turtlebot_Search_Rescue/badge.svg?branch=master)](https://coveralls.io/github/zzjkf2009/Turtlebot_Search_Rescue?branch=master)
 
 # Vision-based Turtlebot Controller
-This is a ROS package that using color based object detecion (OpenCV) to find the desired direction for tutlebots and let them navigate to that object wiht a PID contorller. The vision-based controller is implement in ROS Gazebo simulation environment with turtlebot as base plantform. A gazebo world is created with red, green, blue objects. During the simulation, user can vary the desired color (HSV) and let the turtlebot navigate to a new target. The HSV of some sample colors are listed below. There will be two version of this package, one for ROS indigo, one for ROS kinetic. 
+This is a ROS package that using color based object detecion (OpenCV) to find the desired direction for tutlebots and let them navigate to that object wiht a PID contorller. The vision-based controller is implement in ROS Gazebo simulation environment with turtlebot as base plantform. A gazebo world is created with red, green, blue objects. During the simulation, user can vary the desired color (HSV) and let the turtlebot navigate to a new target. The HSV of some sample colors are listed below. There will be two version of this package, one for ROS indigo, one for ROS kinetic.
 
 ## Author
 * Zejiang Zeng
@@ -30,6 +30,11 @@ Link:[SIP](https://docs.google.com/spreadsheets/d/1JYr0vUaX_IJUcu1v-DaRxEUFKbrd-
 ...sensor_msgs
 ...rostest
 ...rosbag
+
+### install OpenCV
+sudo	apt-get	install	ros-kinetic-opencv3
+### install TurtleBot_Gazebo
+sudo apt-get install ros-Kinetic-turtlebot-gazebo
 
 ## Build
 ```
@@ -72,7 +77,7 @@ Test implemented can be run as follow:
 cd ~/catkin_ws
 source ./devel/setup.bash
 catkin_make run_tests
-``` 
+```
 ## Record - rosbag
 *simulation.launch* file supports recording topics in Gazebo simulation excluding the images. This can be done by specifying "enable_record" argument. By default, recording is disabled.
 
@@ -90,11 +95,11 @@ rosbag info session.bag
 ## Color detection and Object tracking
 
 Object detection and segmenration is the most important and challenging fundamental task of computer vision. It is a critical part
-in our project for turtlebot to "find" what he need to see. The easiest way to detect and segment an object from an image is the color based methods. The object and the background should jave a significant color difference in order to successfully segment objects using color based method. This is acceptable in simulation in gazebo, but in reality, this assumetion is no longer valid. so there are much more complex and fansy methods, filters and algorithms to classfy and detect different features. In this project, I'm simplely using a color based detector to let the robot find see where he should go. All the image processing are done using OpenCV library. 
+in our project for turtlebot to "find" what he need to see. The easiest way to detect and segment an object from an image is the color based methods. The object and the background should jave a significant color difference in order to successfully segment objects using color based method. This is acceptable in simulation in gazebo, but in reality, this assumetion is no longer valid. so there are much more complex and fansy methods, filters and algorithms to classfy and detect different features. In this project, I'm simplely using a color based detector to let the robot find see where he should go. All the image processing are done using OpenCV library.
 
 ### cv_bridge
 Link: http://wiki.ros.org/cv_bridge
-The cv_bridge package create the interface between ROS and OpenCV by converting ROS images into OpenCV images, and vice versa. It lets us to convert ROS image data type to OpenCV image data type and then process image using OpenCV library. 
+The cv_bridge package create the interface between ROS and OpenCV by converting ROS images into OpenCV images, and vice versa. It lets us to convert ROS image data type to OpenCV image data type and then process image using OpenCV library.
 
 ### Object detection in HSV Color Space
 Usually, we get the image in RGB color space by camera. But HSV color space is the most suitable color space for color based image segmentation. So, I converted the color space of original image of the turtlebot frome RGB to HSV image. HUE is unique for that specific color distribution of the object. But SATURATION and VALUE may be vary according to the lighting condition and environment. More detail about the color spaces can be find at : https://www.learnopencv.com/tag/hsv/
@@ -108,21 +113,21 @@ In this project, according to a mannual classification process, I defined the HU
 
 
 ### Object Location Detection
-The position of the object is calculated using moments function by OpenCV. 1st order spatial moments abound x-axis and y-axis and the 0th order central moments of the binary image is calculated. 
+The position of the object is calculated using moments function by OpenCV. 1st order spatial moments abound x-axis and y-axis and the 0th order central moments of the binary image is calculated.
 **Note** If there are two or more objects are detected, this method is not working anymore. Also if there is no desired color detected, the turtlebot will stuck at the orinial place.
 
 ## PID Controller
 If you are not familiar with PID controller, please see: https://www.csimn.com/CSI_pages/PIDforDummies.html
-Here, I set the error as the difference bwtween the position, mainly, PoseX of the detected object and the center of the image view, which is error = weight/2 -poseX. Unit in pixel. outout=Pterm +Iterm +Dterm, where output is angular velocity in radius. The PID gain are tuned mannually as: Kp = 0.002, Ki = 0.001, kd = 0.001 
+Here, I set the error as the difference bwtween the position, mainly, PoseX of the detected object and the center of the image view, which is error = weight/2 -poseX. Unit in pixel. outout=Pterm +Iterm +Dterm, where output is angular velocity in radius. The PID gain are tuned mannually as: Kp = 0.002, Ki = 0.001, kd = 0.001
 
 
 
 ## Issue Note
 As metioned above, there are some issue should be noticed:
-**One** is that if the turtlebot didn't find the desired color for some reason (eg. color didn't exist, target is blocked by other objects), the robot will have to turn in place until it find the color. One sulution could be use keyboard controller to help him to move to a new place and try to look for 
+**One** is that if the turtlebot didn't find the desired color for some reason (eg. color didn't exist, target is blocked by other objects), the robot will have to turn in place until it find the color. One sulution could be use keyboard controller to help him to move to a new place and try to look for
 the target at the new place. Or use some other strategies to let it move.
-**Second** The drawback of deleting the collision check function is that the turtlebot will hit the objects, which may hurt the robots. 
-**Thired** TravisCI didn't pas the Unit test for some reason, it does pass on local compiler. 
+**Second** The drawback of deleting the collision check function is that the turtlebot will hit the objects, which may hurt the robots.
+**Thired** TravisCI didn't pas the Unit test for some reason, it does pass on local compiler.
 
 ## Video Presentation:
-Youtube Link:https://youtu.be/zzCWbYennlE 
+Youtube Link:https://youtu.be/zzCWbYennlE
