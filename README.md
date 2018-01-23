@@ -32,10 +32,14 @@ Link:[SIP](https://docs.google.com/spreadsheets/d/1JYr0vUaX_IJUcu1v-DaRxEUFKbrd-
 ...rosbag
 
 ### install OpenCV
+```
 sudo	apt-get	install	ros-kinetic-opencv3
-### install TurtleBot_Gazebo
-sudo apt-get install ros-Kinetic-turtlebot-gazebo
 
+```
+### install TurtleBot_Gazebo
+```
+sudo apt-get install ros-Kinetic-turtlebot-gazebo
+```
 ## Build
 ```
 mkdir catkin_ws/src
