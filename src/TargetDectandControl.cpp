@@ -46,6 +46,7 @@
 ObjectOrientatedControl::ObjectOrientatedControl(int iLowH, int iHighH) : iLowH (iLowH)
         ,iHighH (iHighH) {
         imageSubscriber();
+        //DistanceSubscriber();
         pub = nh.advertise < geometry_msgs::Twist
                              > ("/cmd_vel_mux/input/teleop", 1000);
 }
@@ -56,10 +57,20 @@ void ObjectOrientatedControl::imageSubscriber() {
                            &ObjectOrientatedControl::imageCallback, this);
 }
 
+void ObjectOrientatedControl::distanceCallback(const sensor_msgs::LaserScan::ConstPtr& laserscan) {
+        for(auto d : laserscan->ranges) {
+                if (d < distance)
+                        distance = d;
+        }
+}
+
+void ObjectOrientatedControl::DistanceSubscriber() {
+        ScanSub = nh.subscribe("/scan",100,&ObjectOrientatedControl::distanceCallback,this);
+}
 void ObjectOrientatedControl::imageCallback(
         const sensor_msgs::ImageConstPtr& msg) {
         try {
-                ROS_INFO_STREAM("get image");
+                //ROS_INFO_STREAM("get image");
                 cv::Mat imgThresholded = getThreholdImg(
                         cv_bridge::toCvShare(msg, "bgr8")->image);
                 cv::imshow("Threshold", imgThresholded);
@@ -130,6 +141,7 @@ cv::Mat ObjectOrientatedControl::drawPosition(cv::Mat originalImg) {
 void ObjectOrientatedControl::velocityPublisher() {
         PIDcontroller pid;
         geometry_msgs::Twist input;
+        ROS_INFO("The distance is %f",distance);
         if (find) {
                 double error = weight / 2 - PoseX;
                 double out = pid.calculatePID(error);
@@ -140,7 +152,7 @@ void ObjectOrientatedControl::velocityPublisher() {
                         input.angular.x = 0;
                         input.angular.y = 0;
                         input.angular.z = out;
-                } else {
+                } else if (distance > 1) {
                         input.linear.x = 1.0;
                         input.linear.y = 0;
                         input.linear.z = 0;
@@ -148,7 +160,16 @@ void ObjectOrientatedControl::velocityPublisher() {
                         input.angular.y = 0;
                         input.angular.z = out;
                 }
-        } else {
+                else {
+                        input.linear.x = 0;
+                        input.linear.y = 0;
+                        input.linear.z = 0;
+                        input.angular.x = 0;
+                        input.angular.y = 0;
+                        input.angular.z = 0;
+                        ROS_INFO_STREAM("STOP,RIGHT HERE");
+                }
+        } else { // if not find the desiged target, turn in place
                 input.linear.x = 0;
                 input.linear.y = 0;
                 input.linear.z = 0;

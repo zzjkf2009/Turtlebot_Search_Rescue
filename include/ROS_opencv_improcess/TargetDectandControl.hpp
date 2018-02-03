@@ -62,6 +62,7 @@ int iHighV = 100;
 int weight;
 bool collision;
 float smallest;
+double distance = 10;
 
 public:
 int PoseX;
@@ -77,14 +78,28 @@ bool find;
  */
 ObjectOrientatedControl(int iLowH = 0, int iHighH = 10);
 
+~ObjectOrientatedControl(){
+};
+
 
 /**
- *   @brief  start the image subscriber
- *
- *   @param  none
- *   @return none
+ * @brief initiate the image sunscriber
+ * @param none
+ * @param none
  */
 void imageSubscriber();
+
+/**
+ * @brif Callback function for distance subscriber, read the distance from /LaserScan and
+ *       read the samllest distance
+ * @param  none
+ * @return none
+ */
+void distanceCallback(const sensor_msgs::LaserScan::ConstPtr& laserscan);
+/**
+ * @brief function that subscribe the distance
+ */
+void DistanceSubscriber();
 /**
  *   @brief  start the velocity Publisher
  *
@@ -102,7 +117,7 @@ void velocityPublisher();
  *   @param  snesor_msgs
  *   @return none
  */
-void imageCallback(const sensor_msgs::ImageConstPtr& msg);
+void imageCallback(const sensor_msgs::Image::ConstPtr& msg);
 /**
  *   @brief  threshold the iamge by HSV
  *
@@ -126,5 +141,7 @@ void getPosition(const cv::Mat& imgThresholded);
  *   @return cv::Mat
  */
 cv::Mat drawPosition(cv::Mat originalImg);
+
 };
+
 #endif  // INCLUDE_ROS_OPENCV_IMPROCESS_TARGETDECTANDCONTROL_HPP_

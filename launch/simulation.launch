@@ -22,10 +22,10 @@
     <param name="scale_angular" value="1.5" type="double"/>
     <remap from="turtlebot_teleop_keyboard/cmd_vel" to="/robot2/cmd_vel_mux/input/teleop"/>
   </node>
-  
-<node pkg="ROS_opencv_improcess" type="visionTurtlebot" name="followRobot" >
+
+<node pkg="ROS_opencv_improcess" type="visionTurtlebot" name="followRobot" output="screen" >
 <remap from="camera/rgb/image_raw" to ="/robot1/camera/rgb/image_raw" />
-<remap from="/scan" to ="/robot1/scan" />
+<!--remap from="/scan" to ="/robot1/scan" /-->
 <remap from="/cmd_vel_mux/input/teleop" to="robot1/cmd_vel_mux/input/teleop" />
 </node>
 
