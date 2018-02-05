@@ -46,26 +46,30 @@
 ObjectOrientatedControl::ObjectOrientatedControl(int iLowH, int iHighH) : iLowH (iLowH)
         ,iHighH (iHighH) {
         imageSubscriber();
-        //DistanceSubscriber();
+        DistanceSubscriber();
         pub = nh.advertise < geometry_msgs::Twist
                              > ("/cmd_vel_mux/input/teleop", 1000);
 }
 
 void ObjectOrientatedControl::imageSubscriber() {
         image_transport::ImageTransport it(nh);
-        sub = it.subscribe("camera/rgb/image_raw", 1,
+        sub = it.subscribe("camera/rgb/image_raw", 100,
                            &ObjectOrientatedControl::imageCallback, this);
 }
 
 void ObjectOrientatedControl::distanceCallback(const sensor_msgs::LaserScan::ConstPtr& laserscan) {
-        for(auto d : laserscan->ranges) {
-                if (d < distance)
-                        distance = d;
+        ObjectOrientatedControl::distance = 1000.0;
+        sensor_msgs::LaserScan scan_;
+        scan_.ranges = laserscan->ranges;
+        for (auto dis : scan_.ranges) {
+                if (dis < distance && dis >0.1)
+                        distance = dis;
         }
+
 }
 
 void ObjectOrientatedControl::DistanceSubscriber() {
-        ScanSub = nh.subscribe("/scan",100,&ObjectOrientatedControl::distanceCallback,this);
+        ScanSub = nh.subscribe("/robot1/scan",1,&ObjectOrientatedControl::distanceCallback,this);
 }
 void ObjectOrientatedControl::imageCallback(
         const sensor_msgs::ImageConstPtr& msg) {
@@ -152,7 +156,7 @@ void ObjectOrientatedControl::velocityPublisher() {
                         input.angular.x = 0;
                         input.angular.y = 0;
                         input.angular.z = out;
-                } else if (distance > 1) {
+                } else if (distance > 0.2) {
                         input.linear.x = 1.0;
                         input.linear.y = 0;
                         input.linear.z = 0;

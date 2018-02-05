@@ -62,7 +62,7 @@ int iHighV = 100;
 int weight;
 bool collision;
 float smallest;
-double distance = 10;
+float distance;
 
 public:
 int PoseX;
